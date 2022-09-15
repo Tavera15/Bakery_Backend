@@ -16,14 +16,14 @@ namespace API.Controllers
         public ProductsController(IRepository<Product> repository, ILogger<ProductsController> logger) : base(repository, logger) { }
 
         [HttpGet("GetProducts")]
-        public override IActionResult GetEntities()
+        public IActionResult GetEntities()
         {
             IEnumerable<Product> products = _context.GetAllEntities();
             return Ok(products.Select(p => new ProductDisplayDTO(p)));
         }
 
         [HttpGet("GetProduct/id")]
-        public override async Task<IActionResult> GetEntity(string id)
+        public async Task<IActionResult> GetEntity(string id)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace API.Controllers
         public async Task<IActionResult> InsertProduct(ProductMakerDTO productMaker)
         {
             Product newProduct = await _context.InsertAsync(new Product(productMaker));
-            return await InsertEntity(newProduct);
+            return Ok(new ProductDisplayDTO(newProduct));
         }
 
         [HttpDelete("DeleteProduct/Id")]

@@ -17,10 +17,10 @@ namespace API.Core.Models
 
         public Product(ProductMakerDTO maker) : this()
         {
-            name = maker.name;
-            mDescription = maker.description;
-            mUnitPrice = maker.unitPrice;
-            mIsAvailable = maker.isAvailable;
+            name            = maker.name;
+            mDescription    = maker.description;
+            mUnitPrice      = maker.unitPrice;
+            mIsAvailable    = maker.isAvailable;
         }
     }
 }
