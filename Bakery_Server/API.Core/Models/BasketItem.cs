@@ -86,35 +86,19 @@ namespace API.Core.Models
             RuleFor(item => item.product)
                 .NotNull()
                 .WithMessage("Product does not exist");
+
+            RuleFor(item => item.sizeSelected)
+                .Must((item, sizeSelected) => ValidateSizeSelected(item.product, sizeSelected))
+                .WithMessage("Invalid size selected");
         }
 
-        /*private bool ValidateSizeSelected(Product product, string sizeSelected)
+        private bool ValidateSizeSelected(Product product, string sizeSelected)
         {
-            try
-            {
-                if(product.sizeChart == null)
-                {
-                    if(!String.IsNullOrWhiteSpace(sizeSelected))
-                    {
-                        throw new Exception("No size chart is available for product: " + product.name);
-                    }
-                }
-                else
-                {
-                    if(String.IsNullOrWhiteSpace(sizeSelected) 
-                        || !product.sizeChart.availableSizes.Split(',').Contains(sizeSelected))
-                    {
-                        throw new Exception("Invalid size selected for product: " + product.name);
-                    }
-                }
+            if (String.IsNullOrWhiteSpace(product.mAvailableSizes)) { return true; }
 
-                return true;
-            }
-            catch(Exception e)
-            {
-                _ = e;
-                return false;
-            }
-        }*/
+            string[] productSizes = product.mAvailableSizes.Split(',');
+         
+            return productSizes.Contains(sizeSelected);
+        }
     }
 }

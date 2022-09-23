@@ -36,7 +36,7 @@ namespace API
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddTransient<IRepository<Product>, ProductService>();
+            services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IBasketItemService, BasketItemService>();
 

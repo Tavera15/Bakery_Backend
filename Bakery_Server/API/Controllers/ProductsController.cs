@@ -11,14 +11,24 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class ProductsController : BaseController<Product>
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBase
     {
-        public ProductsController(IRepository<Product> repository, ILogger<ProductsController> logger) : base(repository, logger) { }
+        private readonly IProductService _context;
+        private readonly ILogger<ProductsController> _logger;
+
+        public ProductsController(IProductService repository, ILogger<ProductsController> logger)
+        {
+            _context = repository;
+            _logger = logger;
+        }
 
         [HttpGet("GetProducts")]
         public IActionResult GetEntities()
         {
             IEnumerable<Product> products = _context.GetAllEntities();
+
             return Ok(products.Select(p => new ProductDisplayDTO(p)));
         }
 
@@ -45,13 +55,9 @@ namespace API.Controllers
         public async Task<IActionResult> InsertProduct(ProductMakerDTO productMaker)
         {
             Product newProduct = await _context.InsertAsync(new Product(productMaker));
-            return Ok(new ProductDisplayDTO(newProduct));
-        }
-
-        [HttpDelete("DeleteProduct/Id")]
-        public async Task<IActionResult> DeleteProduct(string id)
-        {
-            return await base.DeleteEntity(id);
+            Product completeProduct = await _context.AddImagesToProduct(newProduct.mID, productMaker.images);
+            
+            return Created("", new ProductDisplayDTO(completeProduct));
         }
 
         [HttpPut("UpdateProduct/Id")]
@@ -60,6 +66,8 @@ namespace API.Controllers
             try
             {
                 Product updatedProduct = await _context.UpdateAsync(id, new Product(productMaker));
+                Product completeProduct = await _context.AddImagesToProduct(updatedProduct.mID, productMaker.images);
+
                 return Ok(new ProductDisplayDTO(updatedProduct));
             }
             catch(EntityNotFoundException e)
@@ -67,6 +75,25 @@ namespace API.Controllers
                 return NotFound(e.Message);
             }
             catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("DeleteProduct/Id")]
+        public async Task<IActionResult> DeleteProduct(string id)
+        {
+            try
+            {
+                await _context.DeleteAsync(id);
+
+                return Ok();
+            }
+            catch (EntityNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }

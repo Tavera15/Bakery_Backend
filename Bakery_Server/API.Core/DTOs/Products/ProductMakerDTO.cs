@@ -12,5 +12,8 @@ namespace API.Core.DTOs.Products
         public string description { get; set; }
         public double unitPrice { get; set; }
         public bool isAvailable { get; set; }
+        public string availableSizes { get; set; }
+        public IEnumerable<ProductImageMakerDTO> images { get; set; }
+
     }
 }
