@@ -36,9 +36,11 @@ namespace API.DataAccess.SQL.Services
 
         public async Task<Basket> GetBasket(HttpContext httpContext)
         {
+            var allBaskets = _basketDBset.Include(b => b.basketItems).ThenInclude(p => p.product);
+
             string basketId = httpContext.Request.Headers[HEADER_BASKET_ID_NAME];
             Basket basket = !String.IsNullOrWhiteSpace(basketId)
-                ? await _basketDBset.FirstOrDefaultAsync(b => b.mID == basketId)
+                ? await allBaskets.FirstOrDefaultAsync(b => b.mID == basketId)
                 : await CreateNewBasket();
 
             if(basket == null)
