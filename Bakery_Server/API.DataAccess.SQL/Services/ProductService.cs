@@ -19,6 +19,7 @@ namespace API.DataAccess.SQL.Services
         public ProductService(DataContext c) : base(c) 
         {
             _productImagesDbSet = c.Set<ProductImage>();
+            _basketItemsDbSet = c.Set<BasketItem>();
         }
 
         public override IEnumerable<Product> GetAllEntities()
@@ -45,9 +46,11 @@ namespace API.DataAccess.SQL.Services
         {
             Product target = await FindAsync(entityId);
 
-            if(target == null)
+            if(!updatedEntity.mIsAvailable 
+                || updatedEntity.mUnitPrice != target.mUnitPrice 
+                || updatedEntity.mAvailableSizes != target.mAvailableSizes)
             {
-                throw new EntityNotFoundException("Product not found: " + entityId);
+                await RemoveProductFromBaskets(target);
             }
 
             target.name                 = updatedEntity.name;

@@ -19,10 +19,10 @@ namespace API.Controllers
     {
         private readonly IBasketService _basketContext;
         private readonly IBasketItemService _basketItemContext;
-        private readonly IRepository<Product> _productContext;
+        private readonly IProductService _productContext;
         private readonly ILogger<BasketController> _logger;
 
-        public BasketController(IBasketItemService basketItemRepository, IBasketService basketRepository, IRepository<Product> productRepository, ILogger<BasketController> logger)
+        public BasketController(IBasketItemService basketItemRepository, IBasketService basketRepository, IProductService productRepository, ILogger<BasketController> logger)
         {
             _basketContext = basketRepository;
             _basketItemContext = basketItemRepository;
