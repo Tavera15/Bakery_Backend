@@ -16,6 +16,8 @@ namespace API.DataAccess.SQL
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<BakeryOrder> BakeryOrders { get; set; }
+        public DbSet<BakeryOrder> OrderItems { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +33,10 @@ namespace API.DataAccess.SQL
             builder.Entity<Product>()
                 .HasMany(x => x.productImages)
                 .WithOne(x => x.product);
+
+            builder.Entity<BakeryOrder>()
+                .HasMany(x => x.orderItems)
+                .WithOne(x => x.parentOrder);
         }
     }
 }

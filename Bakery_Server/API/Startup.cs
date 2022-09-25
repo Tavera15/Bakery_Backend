@@ -39,6 +39,7 @@ namespace API
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IBasketItemService, BasketItemService>();
+            services.AddTransient<IOrderService, OrderService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

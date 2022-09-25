@@ -4,14 +4,16 @@ using API.DataAccess.SQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.DataAccess.SQL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220925192645_createdOrders")]
+    partial class createdOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,8 +41,8 @@ namespace API.DataAccess.SQL.Migrations
                     b.Property<string>("customerPhone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("grandTotal")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("grandTotal")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("mTimeEntered")
                         .HasColumnType("datetime2");
@@ -134,6 +136,9 @@ namespace API.DataAccess.SQL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("productDesc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("productName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("productPrice")

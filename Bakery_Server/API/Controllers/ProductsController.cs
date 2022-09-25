@@ -32,12 +32,12 @@ namespace API.Controllers
             return Ok(products.Select(p => new ProductDisplayDTO(p)));
         }
 
-        [HttpGet("GetProduct/id")]
-        public async Task<IActionResult> GetEntity(string id)
+        [HttpGet("GetProduct/{entityId}")]
+        public async Task<IActionResult> GetEntity(string entityId)
         {
             try
             {
-                Product product = await _context.FindAsync(id);
+                Product product = await _context.FindAsync(entityId);
 
                 return Ok(new ProductDisplayDTO(product));
             }
@@ -60,12 +60,12 @@ namespace API.Controllers
             return Created("", new ProductDisplayDTO(completeProduct));
         }
 
-        [HttpPut("UpdateProduct/Id")]
-        public async Task<IActionResult> UpdateProduct(string id, ProductMakerDTO productMaker)
+        [HttpPut("UpdateProduct/{entityId}")]
+        public async Task<IActionResult> UpdateProduct(string entityId, ProductMakerDTO productMaker)
         {
             try
             {
-                Product updatedProduct = await _context.UpdateAsync(id, new Product(productMaker));
+                Product updatedProduct = await _context.UpdateAsync(entityId, new Product(productMaker));
                 Product completeProduct = await _context.AddImagesToProduct(updatedProduct.mID, productMaker.images);
 
                 return Ok(new ProductDisplayDTO(updatedProduct));
@@ -80,12 +80,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpDelete("DeleteProduct/Id")]
-        public async Task<IActionResult> DeleteProduct(string id)
+        [HttpDelete("DeleteProduct/{entityId}")]
+        public async Task<IActionResult> DeleteProduct(string entityId)
         {
             try
             {
-                await _context.DeleteAsync(id);
+                await _context.DeleteAsync(entityId);
 
                 return Ok();
             }
