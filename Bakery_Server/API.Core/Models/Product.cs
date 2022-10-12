@@ -23,7 +23,7 @@ namespace API.Core.Models
             name                = maker.name;
             mDescription        = maker.description;
             mUnitPrice          = maker.unitPrice;
-            mIsAvailable        = maker.isAvailable;
+            mIsAvailable        = maker.isProductAvailable;
             mAvailableSizes     = maker.availableSizes;
         }
     }

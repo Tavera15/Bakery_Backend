@@ -41,6 +41,18 @@ namespace API
             services.AddTransient<IBasketItemService, BasketItemService>();
             services.AddTransient<IOrderService, OrderService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("BakeryPolicy",
+                builder =>
+                {
+                    builder.SetIsOriginAllowed(host => true) //.WithOrigins("*")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -63,6 +75,7 @@ namespace API
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCors("BakeryPolicy");
 
             app.UseEndpoints(endpoints =>
             {

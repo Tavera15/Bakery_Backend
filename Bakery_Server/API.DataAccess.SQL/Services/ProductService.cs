@@ -82,6 +82,8 @@ namespace API.DataAccess.SQL.Services
                 throw new EntityNotFoundException("Product does not exists.");
             }
 
+            await ClearProductImages(product);
+
             foreach (ProductImageMakerDTO img in images)
             {
                 ProductImage productImage = new ProductImage(img, product);
