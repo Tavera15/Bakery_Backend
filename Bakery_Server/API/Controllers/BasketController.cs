@@ -50,6 +50,24 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetBasketItem/{basketItemId}")]
+        public async Task<IActionResult> GetBasketItem(string basketItemId)
+        {
+            try
+            {
+                BasketItem target = await _basketItemContext.FindBasketItemAsync(HttpContext, basketItemId);
+                return Ok(new BasketItemDisplayDTO(target));
+            }
+            catch(EntityNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart(BasketItemMakerDTO basketItemData)
         {
@@ -104,8 +122,10 @@ namespace API.Controllers
         {
             try
             {
+                BasketItem target = await _basketItemContext.FindBasketItemAsync(HttpContext, basketItemId);
+
                 BasketItem updatedBasketItem = new BasketItem(updatedBasketItemData);
-                updatedBasketItem.product = await _productContext.FindAsync(updatedBasketItemData.productId);
+                updatedBasketItem.product = target.product;
 
                 BasketItemValidation basketItemValidator = new BasketItemValidation(_productContext);
                 ValidationResult validation = await basketItemValidator.ValidateAsync(updatedBasketItem);

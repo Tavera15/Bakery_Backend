@@ -9,6 +9,7 @@ namespace API.Core.Models
 {
     public class Product : BaseEntity
     {
+        public string mProductType { get; set; } = "Treats";
         public string mDescription { get; set; }
         public double mUnitPrice { get; set; }
         public bool mIsAvailable { get; set; }
@@ -21,6 +22,7 @@ namespace API.Core.Models
         public Product(ProductMakerDTO maker) : this()
         {
             name                = maker.name;
+            mProductType        = maker.productType;
             mDescription        = maker.description;
             mUnitPrice          = maker.unitPrice;
             mIsAvailable        = maker.isProductAvailable;

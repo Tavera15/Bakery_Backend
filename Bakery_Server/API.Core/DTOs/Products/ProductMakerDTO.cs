@@ -9,6 +9,7 @@ namespace API.Core.DTOs.Products
     public class ProductMakerDTO
     {
         public string name { get; set; }
+        public string productType { get; set; }
         public string description { get; set; }
         public double unitPrice { get; set; }
         public bool isProductAvailable { get; set; }

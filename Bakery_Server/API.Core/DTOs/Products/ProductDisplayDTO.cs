@@ -11,6 +11,7 @@ namespace API.Core.DTOs.Products
     {
         public string id { get; set; }
         public string name { get; set; }
+        public string productType { get; set; }
         public string description { get; set; }
         public double unitPrice { get; set; }
         public bool isProductAvailable { get; set; }
@@ -24,6 +25,7 @@ namespace API.Core.DTOs.Products
         {
             id                  = product.mID;
             name                = product.name;
+            productType         = product.mProductType;
             description         = product.mDescription;
             unitPrice           = product.mUnitPrice;
             isProductAvailable  = product.mIsAvailable;

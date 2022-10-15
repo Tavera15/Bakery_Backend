@@ -25,11 +25,15 @@ namespace API.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public IActionResult GetEntities()
+        public IActionResult GetEntities(string itemType = "")
         {
             IEnumerable<Product> products = _context.GetAllEntities();
 
-            return Ok(products.Select(p => new ProductDisplayDTO(p)));
+            IEnumerable<Product> productsToPass = !String.IsNullOrWhiteSpace(itemType)
+                ? products.Where(x => x.mProductType.ToLower() == itemType.ToLower())
+                : products;
+            
+            return Ok(productsToPass.Select(p => new ProductDisplayDTO(p)));
         }
 
         [HttpGet("GetProduct/{entityId}")]

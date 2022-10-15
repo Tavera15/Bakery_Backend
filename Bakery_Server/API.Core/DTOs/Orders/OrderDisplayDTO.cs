@@ -9,6 +9,7 @@ namespace API.Core.DTOs.Orders
 {
     public class OrderDisplayDTO
     {
+        public string invoiceID { get; set; }
         public string customerName { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
@@ -18,6 +19,7 @@ namespace API.Core.DTOs.Orders
         public string state { get; set; }
         public string zipCode { get; set; }
         public string grandTotal { get; set; }
+        public string timeCreated { get; set; }
 
         public IEnumerable<OrderItemDisplayDTO> orderItems { get; set; } = new List<OrderItemDisplayDTO>();
 
@@ -25,6 +27,7 @@ namespace API.Core.DTOs.Orders
 
         public OrderDisplayDTO(BakeryOrder o)
         {
+            invoiceID = o.mID;
             customerName = o.name;
             addressLine1 = o.addressLine1;
             addressLine2 = o.addressLine2;
@@ -34,6 +37,7 @@ namespace API.Core.DTOs.Orders
             email = o.customerEmail;
             phone = o.customerPhone;
             grandTotal = o.grandTotal;
+            timeCreated = String.Format("{0:MMMM dd, yyyy}", o.mTimeEntered);
             orderItems = o.orderItems.Select(i => new OrderItemDisplayDTO(i));
         }
     }

@@ -54,6 +54,7 @@ namespace API.DataAccess.SQL.Services
             }
 
             target.name                 = updatedEntity.name;
+            target.mProductType         = updatedEntity.mProductType;
             target.mDescription         = updatedEntity.mDescription;
             target.mUnitPrice           = updatedEntity.mUnitPrice;
             target.mIsAvailable         = updatedEntity.mIsAvailable;
