@@ -16,7 +16,7 @@ namespace API.Core.DTOs.Products
         public double unitPrice { get; set; }
         public bool isProductAvailable { get; set; }
         public string availableSizes { get; set; }
-        public DateTime lastTimeModified { get; set; }
+        public string lastTimeModified { get; set; }
         public IEnumerable<ProductImageDisplayDTO> images { get; set; }
 
         public ProductDisplayDTO() { }
@@ -30,7 +30,7 @@ namespace API.Core.DTOs.Products
             unitPrice           = product.mUnitPrice;
             isProductAvailable  = product.mIsAvailable;
             availableSizes      = product.mAvailableSizes;
-            lastTimeModified    = product.mTimeModified;
+            lastTimeModified    = String.Format("{0:MMMM dd, yyyy}", product.mTimeEntered);
             images              = product?.productImages.Select(i => new ProductImageDisplayDTO(i));
         }
     }
