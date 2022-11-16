@@ -73,9 +73,9 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("BakeryPolicy");
 
             app.UseAuthorization();
-            app.UseCors("BakeryPolicy");
 
             app.UseEndpoints(endpoints =>
             {

@@ -2,6 +2,7 @@
 using API.Core.CustomExceptions;
 using API.Core.DTOs.Orders;
 using API.Core.Models;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -59,7 +60,17 @@ namespace API.Controllers
         {
             Basket basket = await _basketService.GetBasket(HttpContext);
             BakeryOrder newOrder = await _orderContext.CreateNewOrder(orderDetails, basket);
+
+            OrderValidation basketItemValidator = new OrderValidation();
+            ValidationResult validation = await basketItemValidator.ValidateAsync(newOrder);
+
+            if (!validation.IsValid)
+            {
+                throw new Exception(String.Join("", validation.Errors.Select(e => e.ErrorMessage + "\n")));
+            }
+
             OrderDisplayDTO res = new OrderDisplayDTO(newOrder);
+            res.basketId = basket.mID;
             await _basketService.ClearBasket(HttpContext);
 
             return Created("", res);

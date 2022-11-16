@@ -1,4 +1,6 @@
-﻿using API.Core.DTOs.Orders;
+﻿using API.Core.Contracts;
+using API.Core.DTOs.Orders;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,47 @@ namespace API.Core.Models
             city = orderDetails.city;
             state = orderDetails.state;
             zipCode = orderDetails.zipCode;
+        }
+    }
+
+    public class OrderValidation : AbstractValidator<BakeryOrder>
+    {
+        public OrderValidation()
+        {
+            RuleFor(item => item.name)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Customer name required");
+
+            RuleFor(item => item.addressLine1)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Address Line 1 required");
+
+            RuleFor(item => item.city)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("City required");
+
+            RuleFor(item => item.state)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("State required");
+
+            RuleFor(item => item.zipCode)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("Zipcode required");
+
+            RuleFor(item => item.customerPhone)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("Phone number required");
+
+            RuleFor(item => item.customerEmail)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("Email required");
         }
     }
 }

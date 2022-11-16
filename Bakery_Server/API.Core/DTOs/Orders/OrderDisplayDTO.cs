@@ -10,6 +10,7 @@ namespace API.Core.DTOs.Orders
     public class OrderDisplayDTO
     {
         public string invoiceID { get; set; }
+        public string basketId { get;set; }
         public string customerName { get; set; }
         public string email { get; set; }
         public string phone { get; set; }

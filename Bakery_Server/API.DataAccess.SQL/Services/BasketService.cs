@@ -47,7 +47,7 @@ namespace API.DataAccess.SQL.Services
 
             if(basket == null)
             {
-                throw new EntityNotFoundException();
+                basket = await CreateNewBasket();
             }
 
             return basket;
