@@ -46,7 +46,8 @@ namespace API
                 options.AddPolicy("BakeryPolicy",
                 builder =>
                 {
-                    builder.SetIsOriginAllowed(host => true) //.WithOrigins("*")
+                    builder
+                        .WithOrigins("https://comfy-unicorn-121de6.netlify.app", "http://localhost:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

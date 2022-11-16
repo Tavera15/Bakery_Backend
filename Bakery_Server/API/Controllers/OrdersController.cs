@@ -58,22 +58,29 @@ namespace API.Controllers
         [HttpPost("CreateNewOrder")]
         public async Task<IActionResult> CreateNewOrder(OrderMakerDTO orderDetails)
         {
-            Basket basket = await _basketService.GetBasket(HttpContext);
-            BakeryOrder newOrder = await _orderContext.CreateNewOrder(orderDetails, basket);
-
-            OrderValidation basketItemValidator = new OrderValidation();
-            ValidationResult validation = await basketItemValidator.ValidateAsync(newOrder);
-
-            if (!validation.IsValid)
+            try
             {
-                throw new Exception(String.Join("", validation.Errors.Select(e => e.ErrorMessage + "\n")));
+                Basket basket = await _basketService.GetBasket(HttpContext);
+                BakeryOrder newOrder = await _orderContext.CreateNewOrder(orderDetails, basket);
+
+                OrderValidation basketItemValidator = new OrderValidation();
+                ValidationResult validation = await basketItemValidator.ValidateAsync(newOrder);
+
+                if (!validation.IsValid)
+                {
+                    throw new Exception(String.Join("", validation.Errors.Select(e => e.ErrorMessage + "\n")));
+                }
+
+                OrderDisplayDTO res = new OrderDisplayDTO(newOrder);
+                res.basketId = basket.mID;
+                await _basketService.ClearBasket(HttpContext);
+
+                return Created("", res);
             }
-
-            OrderDisplayDTO res = new OrderDisplayDTO(newOrder);
-            res.basketId = basket.mID;
-            await _basketService.ClearBasket(HttpContext);
-
-            return Created("", res);
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
